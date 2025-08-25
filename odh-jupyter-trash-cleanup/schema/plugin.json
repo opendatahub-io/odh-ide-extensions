@@ -1,0 +1,16 @@
+{
+  "jupyter.lab.toolbars": {
+    "FileBrowser": [
+      {
+        "name": "Empty Trash",
+        "command": "odh-ide:clear-trash",
+        "rank": 1000
+      }
+    ]
+  },
+  "title": "odh-ide-extensions: Empty Trash",
+  "description": "Button for emptying the trash",
+  "type": "object",
+  "properties": {},
+  "additionalProperties": false
+}

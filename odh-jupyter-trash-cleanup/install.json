@@ -1,0 +1,7 @@
+{
+  "packageManager": "python",
+  "packageName": "odh_jupyter_trash_cleanup",
+  "displayName": "ODH Jupyter Trash Cleanup",
+  "description": "Adds a command and toolbar button to empty the user's Trash directory, backed by an authenticated server endpoint.",
+  "uninstallInstructions": "Use your Python package manager (pip, conda, etc.) to uninstall the package odh_jupyter_trash_cleanup"
+}

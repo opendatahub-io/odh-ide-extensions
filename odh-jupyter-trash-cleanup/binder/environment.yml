@@ -1,0 +1,21 @@
+# a mybinder.org-ready environment for demoing odh_jupyter_trash_cleanup
+# this environment may also be used locally on Linux/MacOS/Windows, e.g.
+#
+#   conda env update --file binder/environment.yml
+#   conda activate odh-jupyter-trash-cleanup-demo
+#
+name: odh-jupyter-trash-cleanup-demo
+
+channels:
+  - conda-forge
+
+dependencies:
+  # runtime dependencies
+  - python >=3.13,<3.14.0a0
+  - jupyterlab >=4.0.0,<5
+  # labextension build dependencies
+  - nodejs >=22,<23
+  - pip
+  - wheel
+  # additional packages for demos
+  # - ipywidgets
