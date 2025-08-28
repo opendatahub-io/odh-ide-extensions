@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="1" failures="0" errors="0" time="1.979">
-  <testsuite name="odh-jupyter-trash-cleanup" errors="0" failures="0" skipped="0" timestamp="2025-08-20T23:55:17" time="1.264" tests="1">
-    <testcase classname="odh-jupyter-trash-cleanup should be tested" name="odh-jupyter-trash-cleanup should be tested" time="0.002">
-    </testcase>
-  </testsuite>
-</testsuites>
