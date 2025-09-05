@@ -1,0 +1,161 @@
+name: Build and test Extension
+
+on:
+  workflow_call:
+    inputs:
+      extension:
+        description: "The extension name"
+        required: true
+        type: string
+env:
+  # TODO: This should be avoided - but we need to define how to deal with yarn.lock
+  YARN_ENABLE_IMMUTABLE_INSTALLS: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "./${{ inputs.extension }}"
+    outputs:
+      python_name: ${{ steps.get_python_name.outputs.python_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Base Setup
+        uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
+
+      - name: Install dependencies
+        run: python -m pip install -U "jupyterlab>=4.0.0,<5"
+
+      - name: Get Extension Python Name
+        id: get_python_name
+        run: |
+          python_name=$(echo "${{ inputs.extension }}" | tr '-' '_')
+          echo "python_name=$python_name" >> $GITHUB_OUTPUT
+
+      - name: Lint the extension
+        run: |
+          set -eux
+          jlpm
+          jlpm run lint:check
+
+      - name: Test the extension
+        run: |
+          set -eux
+          jlpm run test
+
+      - name: Build the extension
+        run: |
+          set -eux
+          python -m pip install .[test]
+
+          pytest -vv -r ap --cov ${{ steps.get_python_name.outputs.python_name }}
+
+          jupyter labextension list
+          jupyter labextension list 2>&1 | grep -ie "${{ inputs.extension }}.*OK"
+          python -m jupyterlab.browser_check
+
+      - name: Package the extension
+        run: |
+          set -eux
+
+          pip install build
+          python -m build          
+          pip uninstall -y "${{ steps.get_python_name.outputs.python_name }}" jupyterlab
+
+      - name: Upload extension packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-artifacts
+          path: ./${{ inputs.extension }}/dist/*
+          if-no-files-found: error
+
+  test_isolated:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          architecture: "x64"
+      - uses: actions/download-artifact@v4
+        with:
+          name: extension-artifacts
+      - name: Install and Test
+        run: |
+          set -eux
+          # Remove NodeJS, twice to take care of system and locally installed node versions.
+          sudo rm -rf $(which node)
+          sudo rm -rf $(which node)
+
+          pip install "jupyterlab>=4.0.0,<5" ${{ needs.build.outputs.python_name }}*.whl
+
+          jupyter labextension list
+          jupyter labextension list 2>&1 | grep -ie "${{ inputs.extension }}.*OK"
+          python -m jupyterlab.browser_check --no-browser-test
+
+  integration-tests:
+    name: Integration tests
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/pw-browsers
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Base Setup
+        uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
+
+      - name: Download extension package
+        uses: actions/download-artifact@v4
+        with:
+          name: extension-artifacts
+
+      - name: Install the extension
+        run: |
+          set -eux
+          python -m pip install "jupyterlab>=4.0.0,<5" ${{ needs.build.outputs.python_name }}*.whl
+
+      - name: Install dependencies
+        working-directory: ${{ inputs.extension }}/ui-tests
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: 0
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+        run: |
+          touch yarn.lock
+          jlpm install
+
+      - name: Install browser
+        run: |
+          set -eux
+          jlpm playwright install-deps
+          jlpm playwright install chromium
+        working-directory: ${{ inputs.extension }}/ui-tests
+
+      - name: Execute integration tests
+        working-directory: ${{ inputs.extension }}/ui-tests
+        run: |
+          jlpm playwright test
+
+      - name: Upload Playwright Test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.extension }}-playwright-tests
+          path: |
+            ${{ inputs.extension }}/ui-tests/test-results
+            ${{ inputs.extension }}/ui-tests/playwright-report
+
+  check_links:
+    name: Check Links
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
+      - uses: jupyterlab/maintainer-tools/.github/actions/check-links@v1
