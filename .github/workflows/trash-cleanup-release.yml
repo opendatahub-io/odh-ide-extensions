@@ -1,0 +1,91 @@
+name: Trash Cleanup Release
+on:
+  push:
+    tags:
+      - v*
+  workflow_dispatch:
+    inputs:
+      tag:
+        type: string
+        required: true
+        description: "Tag associated with the release (e.g.: v0.1.0)"
+      dry_run:
+        type: boolean
+        required: true
+        default: true
+        description: "Indicates if it is a dry run, when artifacts are not published"
+
+env:
+  FORCE_COLOR: true
+  PYTHON_VERSION: 3.13
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Check version
+        run: |
+          set -o pipefail
+  
+          # Get the version from the code
+          CODE_VERSION=$(jq -r '.version' ./odh-jupyter-trash-cleanup/package.json)
+          if [ -z "$CODE_VERSION" ]; then
+              echo "::error title='Code version not found'::Failed to extract version from package.json."
+              exit 1
+          fi
+          
+          # Check the event type and get the tag accordingly
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            # For a push event, the tag is in github.ref
+            PROVIDED_TAG="${GITHUB_REF##*/}"
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            # For a workflow_dispatch, get the tag from the input
+            PROVIDED_TAG="${{ github.event.inputs.tag }}"
+          else
+            echo "::error title='Unsupported event type'::This workflow is not supported for event '${{ github.event_name }}'."
+            exit 1
+          fi
+
+          # Compare the provided tag with the code version
+          if [[ "$PROVIDED_TAG" != "v$CODE_VERSION" ]]; then
+            echo "::error title='Provided tag does not match version in code'::Provided tag: $PROVIDED_TAG, Code version: v$CODE_VERSION."
+            exit 1
+          fi
+          
+          echo "::info title='Tag validation successful'::Provided tag '$PROVIDED_TAG' matches code version 'v$CODE_VERSION'."
+      - name: Build package
+        run: |
+          cd odh-jupyter-trash-cleanup
+          python -m pip install --upgrade build
+          python -m build
+      - name: Publish package on PyPI
+        if: ${{ github.repository_owner == 'opendatahub-io' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && !inputs.dry_run)) }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          verbose: true
+          print-hash: true
+          packages-dir: odh-jupyter-trash-cleanup/dist
+          skip-existing: true
+      - name: Publish package to Test PyPI
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          verbose: true
+          print-hash: true
+          packages-dir: odh-jupyter-trash-cleanup/dist
+          repository-url: https://test.pypi.org/legacy/
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          skip-existing: true
