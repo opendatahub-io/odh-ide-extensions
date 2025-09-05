@@ -29,18 +29,24 @@ def _(*args, **kwargs):
 # verify the environment is self-consistent before even starting
 _(sys.executable, "-m", "pip", "check")
 
-# install the labextension
-_(sys.executable, "-m", "pip", "install", "-e", ".")
-_(sys.executable, "-m", "jupyter", "labextension", "develop", "--overwrite", ".")
-_(
-    sys.executable,
-    "-m",
-    "jupyter",
-    "server",
-    "extension",
-    "enable",
-    "odh_jupyter_trash_cleanup",
-)
+extensions = [
+    "odh-jupyter-trash-cleanup"
+]
+
+for extension in extensions:
+    # install the labextensions
+    print(f"INSTALLING:  {extension}")
+    _(sys.executable, "-m", "pip", "install", "-e", extension)
+    _(sys.executable, "-m", "jupyter", "labextension", "develop", "--overwrite", extension)
+    _(
+        sys.executable,
+        "-m",
+        "jupyter",
+        "server",
+        "extension",
+        "enable",
+        extension,
+    )
 
 # verify the environment the extension didn't break anything
 _(sys.executable, "-m", "pip", "check")
