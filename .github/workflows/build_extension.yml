@@ -11,9 +11,14 @@ env:
   # TODO: This should be avoided - but we need to define how to deal with yarn.lock
   YARN_ENABLE_IMMUTABLE_INSTALLS: false
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     defaults:
       run:
         working-directory: "./${{ inputs.extension }}"
@@ -21,7 +26,7 @@ jobs:
       python_name: ${{ steps.get_python_name.outputs.python_name }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
       - name: Base Setup
         uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
 
@@ -60,9 +65,9 @@ jobs:
         run: |
           set -eux
 
-          pip install build
-          python -m build          
-          pip uninstall -y "${{ steps.get_python_name.outputs.python_name }}" jupyterlab
+          python -m pip install build
+          python -m build
+          python -m pip uninstall -y "${{ steps.get_python_name.outputs.python_name }}" jupyterlab
 
       - name: Upload extension packages
         uses: actions/upload-artifact@v4
@@ -74,6 +79,7 @@ jobs:
   test_isolated:
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Install Python
@@ -101,6 +107,7 @@ jobs:
     name: Integration tests
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     env:
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/pw-browsers
 

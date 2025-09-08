@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "description": "Open Data Hub IDE Extensions",
     "private": true,
-    "license": "Apache-2.0",    
+    "license": "Apache-2.0",
     "workspaces": [
         "odh-jupyter-trash-cleanup"
     ],

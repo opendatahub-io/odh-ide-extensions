@@ -8,7 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
+      contents: read
     steps:
-      - uses: jupyterlab/maintainer-tools/.github/actions/binder-link@v1
+      - uses: jupyterlab/maintainer-tools/.github/actions/binder-link@6eea29856108263b3eb948ed3d1e4d9476667233
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
