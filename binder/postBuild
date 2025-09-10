@@ -39,7 +39,7 @@ def _(*args, **kwargs):
 # verify the environment is self-consistent before even starting
 _(sys.executable, "-m", "pip", "check")
 
-extensions = read_workspaces("../package.json")
+extensions = read_workspaces("package.json")
 
 for extension in extensions:
     # install the labextensions
