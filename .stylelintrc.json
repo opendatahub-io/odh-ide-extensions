@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "stylelint-config-recommended",
+    "stylelint-config-standard",
+    "stylelint-prettier/recommended"
+  ],
+  "plugins": ["stylelint-csstree-validator"],
+  "rules": {
+    "csstree/validator": true,
+    "property-no-vendor-prefix": null,
+    "selector-class-pattern": "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+    "selector-no-vendor-prefix": null,
+    "value-no-vendor-prefix": null
+  }
+}

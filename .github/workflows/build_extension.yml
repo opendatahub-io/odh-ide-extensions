@@ -37,10 +37,11 @@ jobs:
           echo "python_name=$python_name" >> $GITHUB_OUTPUT
 
       - name: Lint the extension
+        working-directory: ${{ github.workspace }}
         run: |
           set -eux
-          jlpm
-          jlpm run lint:check
+          npm ci
+          make EXTENSION=${{ inputs.extension }} lint
 
       - name: Test the extension
         run: |

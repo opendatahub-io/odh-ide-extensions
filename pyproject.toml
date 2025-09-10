@@ -1,0 +1,21 @@
+[tool.flake8]
+enable-extensions = "G"
+max-line-length = 120
+ignore = [
+  "E4",    # import formatting
+  "E721",  # comparing types instead of isinstance
+  "E731",  # assigning lambda
+  "E741",  # ambiguous names
+  "H104",  # only comments in file
+  "H101",  # TODO(name)
+  "H216",  # mocking
+  "H404",  # docstring newline
+  "H405",  # docstring summary + newline
+  "W503",  # line break before binary operator
+  "W504"   # breaks after binary operators
+]
+import-order-style = "google"
+
+[tool.black]
+line-length = 120
+target-version = ['py39', 'py310', 'py311', 'py312', 'py313']
