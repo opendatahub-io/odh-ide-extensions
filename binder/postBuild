@@ -10,10 +10,20 @@
 """
 import subprocess
 import sys
+import json
 from pathlib import Path
 
-
 ROOT = Path.cwd()
+
+def read_workspaces(package_json_path):
+    """Reads the list of workspaces from a given package.json file"""
+    with open(package_json_path, "r", encoding="utf-8") as file:
+        data = json.load(file)
+
+    if "workspaces" in data:
+        return data["workspaces"]
+    else:
+        return []
 
 def _(*args, **kwargs):
     """ Run a command, echoing the args
@@ -29,9 +39,7 @@ def _(*args, **kwargs):
 # verify the environment is self-consistent before even starting
 _(sys.executable, "-m", "pip", "check")
 
-extensions = [
-    "odh-jupyter-trash-cleanup"
-]
+extensions = read_workspaces("../package.json")
 
 for extension in extensions:
     # install the labextensions
