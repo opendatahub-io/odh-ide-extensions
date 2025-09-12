@@ -4,7 +4,6 @@
     "description": "Open Data Hub IDE Extensions",
     "private": true,
     "license": "Apache-2.0",
-    "packageManager": "npm@10.9.2",
     "workspaces": [
         "odh-jupyter-trash-cleanup"
     ],

@@ -1,10 +1,10 @@
-# a mybinder.org-ready environment for demoing odh_jupyter_trash_cleanup
+# a mybinder.org-ready environment for demoing ODH IDE Extensions
 # this environment may also be used locally on Linux/MacOS/Windows, e.g.
 #
 #   conda env update --file binder/environment.yml
-#   conda activate odh-jupyter-trash-cleanup-demo
+#   conda activate odh-ide-extensions
 #
-name: odh-jupyter-trash-cleanup-demo
+name: odh-ide-extensions
 
 channels:
   - conda-forge

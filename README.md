@@ -1,6 +1,7 @@
 # OpenDataHub IDE Extensions
 
 ![GitHub License](https://img.shields.io/github/license/opendatahub-io/odh-ide-extensions)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/opendatahub-io/odh-ide-extensions/HEAD)
 
 
 Welcome to the OpenDataHub IDE Extensions repository! This repository is a collection of IDE extensions for the Open Data Hub ecosystem, providing enhanced functionality for data science and development workflows.
