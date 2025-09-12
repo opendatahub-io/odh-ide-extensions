@@ -90,9 +90,11 @@ jobs:
       - name: Install and Test
         run: |
           set -eux
-          # Remove NodeJS, twice to take care of system and locally installed node versions.
-          sudo rm -rf $(which node)
-          sudo rm -rf $(which node)
+
+          # Remove NodeJS if present (system or locally installed).
+          if command -v node >/dev/null 2>&1; then sudo rm -f "$(command -v node)"; fi
+          if command -v npm  >/dev/null 2>&1; then sudo rm -f "$(command -v npm)";  fi
+          if command -v corepack >/dev/null 2>&1; then sudo rm -f "$(command -v corepack)"; fi
 
           pip install "jupyterlab>=4.0.0,<5" ${{ needs.build.outputs.python_name }}*.whl
 
