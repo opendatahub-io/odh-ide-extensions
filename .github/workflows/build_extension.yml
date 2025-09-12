@@ -7,9 +7,6 @@ on:
         description: "The extension name"
         required: true
         type: string
-env:
-  # TODO: This should be avoided - but we need to define how to deal with yarn.lock
-  YARN_ENABLE_IMMUTABLE_INSTALLS: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
