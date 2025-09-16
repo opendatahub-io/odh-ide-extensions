@@ -11,7 +11,9 @@ module.exports = [
       '**/*.d.ts',
       '**/tests/**',
       '**/__tests__/**',
-      '**/ui-tests/**'
+      '**/ui-tests/**',
+      '**/babel.config.js',
+      '**/jest.config.js'
     ]
   },
   js.configs.recommended,

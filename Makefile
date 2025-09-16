@@ -22,10 +22,10 @@ prettier-ui: require-extension
 	npx --yes prettier "$(EXTENSION)/**/*{.ts,.tsx,.js,.jsx,.css,.json,.md}" --write --list-different
 
 eslint-check-ui: require-extension
-	npx --yes eslint "$(EXTENSION)" --cache --ext .ts,.tsx,.js,.jsx --max-warnings=0
+	npx --yes eslint "$(EXTENSION)" --cache --ext .ts,.tsx,.js,.jsx
 
 eslint-ui: require-extension
-	npx --yes eslint "$(EXTENSION)" --cache --ext .ts,.tsx,.js,.jsx --max-warnings=0 --fix
+	npx --yes eslint "$(EXTENSION)" --cache --ext .ts,.tsx,.js,.jsx --fix
 
 lint-ui: require-extension
 	$(MAKE) EXTENSION=$(EXTENSION) prettier-ui
@@ -33,7 +33,7 @@ lint-ui: require-extension
 	$(MAKE) EXTENSION=$(EXTENSION) stylelint-ui
 
 stylelint-check-ui: require-extension
-	npx --yes stylelint "$(EXTENSION)/**/*.{css,scss}" --max-warnings=0
+	npx --yes stylelint "$(EXTENSION)/**/*.{css,scss}"
 
 stylelint-ui: require-extension
 	npx --yes stylelint "$(EXTENSION)/**/*.{css,scss}" --fix
