@@ -3,8 +3,6 @@ from pathlib import Path
 
 import shutil
 import os
-import asyncio
-import subprocess
 import logging
 
 # For Trash cleaning using gio
@@ -22,23 +20,11 @@ class Trash:
     """Trash functions"""
 
     async def empty_trash(self) -> int:
-        """Remove all items from Trash, permanently deleting them"""
+        """Permanently delete all items from Trash"""
         logger.warning("Removing files from the trash")
-        deleted = 0
-        if shutil.which(GIO) is not None:
-            list_files_proc = subprocess.run(LIST_TRASH_FILES_COMMAND,
-                                            capture_output=True,
-                                            check=False,
-                                            timeout=10)
-            deleted = len(list_files_proc.stdout.splitlines()) if list_files_proc.stdout else 0
-            subprocess.call(EMPTY_TRASH_COMMAND)
-        else:            
-            deleted += sum(
-                await asyncio.gather(
-                    asyncio.to_thread(self._clear_dir, TRASH_DIR / "files"),
-                    asyncio.to_thread(self._clear_dir, TRASH_DIR / "info"),
-                )
-            )
+        # info files are metadata, not the actual file.
+        self._clear_dir(TRASH_DIR / "info")
+        deleted = self._clear_dir(TRASH_DIR / "files")
         logger.warning("Files removed from the trash: %d", deleted)
         return deleted
 
@@ -55,7 +41,7 @@ class Trash:
             try:
                 p.unlink(missing_ok=True)  # type: ignore[arg-type]
                 return 1
-            except Exception:
+            except FileNotFoundError:
                 logger.exception("Failed to remove %s", p)
                 return 0
         for child in p.iterdir():
@@ -69,7 +55,7 @@ class Trash:
                 elif child.is_dir():
                     shutil.rmtree(child, ignore_errors=True)
                 count += 1
-            except Exception:
+            except FileNotFoundError:
                 # Best-effort cleanup; log and continue
                 logger.exception("Failed to remove %s", child)
         return count

@@ -1,7 +1,5 @@
 """Trash Tests"""
 
-from pathlib import Path
-import os
 import shutil
 import pytest
 from odh_jupyter_trash_cleanup.trash import Trash
@@ -49,9 +47,8 @@ def test_subdir_is_symlink_skips_it_and_returns_count(tmp_path):
     assert sub_link.exists()  # Should still exist (not followed)
 
 @pytest.mark.asyncio
-async def test_empty_trash_fallback_path_counts_and_removes(monkeypatch, tmp_path):
-    # Force manual path (disable gio)
-    monkeypatch.setattr(shutil, "which", lambda _: None)
+async def test_empty_trash_not_counting_info(monkeypatch, tmp_path):
+    """Test the cleaning count of Trash when there's info file."""
     # Point TRASH_DIR at a temp layout
     files = tmp_path / "files"
     info = tmp_path / "info"
@@ -61,6 +58,6 @@ async def test_empty_trash_fallback_path_counts_and_removes(monkeypatch, tmp_pat
     (info / "a.trashinfo").write_text("[Trash Info]")
     monkeypatch.setattr(trash_mod, "TRASH_DIR", tmp_path, raising=True)
     deleted = await trash_mod.Trash().empty_trash()
-    assert deleted == 2
+    assert deleted == 1
     assert not (files / "a.txt").exists()
     assert not (info / "a.trashinfo").exists()
