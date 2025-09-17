@@ -24,7 +24,7 @@ class Trash:
 
     async def empty_trash(self) -> int:
         """Permanently delete all items from Trash."""
-        logger.warning("Removing files from the trash")
+        logger.warning("Emptying trash")
         # info files are metadata, not the actual file.
         await asyncio.to_thread(self._clear_dir, TRASH_DIR / "info")
         deleted = await asyncio.to_thread(self._clear_dir, TRASH_DIR / "files")
