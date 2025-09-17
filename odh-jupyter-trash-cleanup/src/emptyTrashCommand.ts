@@ -28,12 +28,13 @@ export const emptyTrashCommand = (translator: ITranslator) => {
           options: { autoClose: false }
         },
         success: {
-          message: (result) => {
+          message: result => {
             const trashEmptyResponse = result as TrashEmptyResponse;
-            console.log("" + trashEmptyResponse.deleted)
+            console.log('' + trashEmptyResponse.deleted);
 
             if (trashEmptyResponse.deleted > 0) {
-              return trans._n('%1 file successfully removed from trash.',
+              return trans._n(
+                '%1 file successfully removed from trash.',
                 '%1 files successfully removed from trash.',
                 trashEmptyResponse.deleted,
                 [trashEmptyResponse.deleted]
