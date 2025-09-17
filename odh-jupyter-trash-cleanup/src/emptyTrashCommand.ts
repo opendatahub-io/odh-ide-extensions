@@ -2,7 +2,7 @@ import { requestAPI } from './handler';
 import { showDialog, Dialog, Notification } from '@jupyterlab/apputils';
 import { trashIcon } from './TrashIcon';
 import { ITranslator } from '@jupyterlab/translation';
-import { TrashEmptyResponse } from './ITrashEmptyResponse';
+import { ITrashEmptyResponse } from './ITrashEmptyResponse';
 
 export const emptyTrashCommand = (translator: ITranslator) => {
   const trans = translator.load('odh_jupyter_trash_cleanup');
@@ -29,7 +29,7 @@ export const emptyTrashCommand = (translator: ITranslator) => {
         },
         success: {
           message: result => {
-            const trashEmptyResponse = result as TrashEmptyResponse;
+            const trashEmptyResponse = result as ITrashEmptyResponse;
             console.log('' + trashEmptyResponse.deleted);
 
             if (trashEmptyResponse.deleted > 0) {
