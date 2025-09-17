@@ -1,9 +1,9 @@
-"""Module for trash functions"""
-from pathlib import Path
-
-import shutil
-import os
+"""Module for trash functions."""
+import asyncio
 import logging
+import os
+import shutil
+from pathlib import Path
 
 # For Trash cleaning using gio
 GIO = "gio"
@@ -12,19 +12,22 @@ LIST_TRASH_FILES_COMMAND = [GIO, "trash", "--list"]
 
 # For manual removal of files
 XDG_DATA_HOME = os.environ.get("XDG_DATA_HOME")
-TRASH_DIR = (Path(XDG_DATA_HOME) if XDG_DATA_HOME else Path.home() / ".local" / "share") / "Trash"
+SHARE_PATH = Path.home() / ".local" / "share"
+BASE_PATH = (Path(XDG_DATA_HOME) if XDG_DATA_HOME else SHARE_PATH)
+TRASH_DIR = BASE_PATH / "Trash"
 
 logger = logging.getLogger(__name__)
 
+
 class Trash:
-    """Trash functions"""
+    """Trash functions."""
 
     async def empty_trash(self) -> int:
-        """Permanently delete all items from Trash"""
+        """Permanently delete all items from Trash."""
         logger.warning("Removing files from the trash")
         # info files are metadata, not the actual file.
-        self._clear_dir(TRASH_DIR / "info")
-        deleted = self._clear_dir(TRASH_DIR / "files")
+        await asyncio.to_thread(self._clear_dir, TRASH_DIR / "info")
+        deleted = await asyncio.to_thread(self._clear_dir, TRASH_DIR / "files")
         logger.warning("Files removed from the trash: %d", deleted)
         return deleted
 
@@ -34,7 +37,8 @@ class Trash:
             return 0
         # Refuse to traverse if the subdir itself is a symlink
         if p.is_symlink():
-            logger.warning("Refusing to traverse symlinked trash subdir: %s", p)
+            logger.warning("Refusing to traverse symlinked trash subdir: %s",
+                           p)
             return 0
         # If a file exists where a directory is expected, remove it
         if p.is_file():
