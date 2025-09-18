@@ -1,6 +1,6 @@
 [tool.flake8]
 enable-extensions = "G"
-max-line-length = 120
+max-line-length = 79
 ignore = [
   "E4",    # import formatting
   "E721",  # comparing types instead of isinstance
@@ -17,5 +17,5 @@ ignore = [
 import-order-style = "google"
 
 [tool.black]
-line-length = 120
+line-length = 79
 target-version = ['py39', 'py310', 'py311', 'py312', 'py313']
