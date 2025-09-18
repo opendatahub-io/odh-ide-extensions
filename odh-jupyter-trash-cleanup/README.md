@@ -21,9 +21,12 @@ When the extension is installed you should see the Trash button on the file brow
 
 <img width="1386" height="343" alt="image" src="https://github.com/user-attachments/assets/844c6ed0-5418-46dd-a1ca-40e38986c5d4" />
 
-When clicking on it, a confirmation pop-up will appear and if "Empty Trash" is clicked, then a notification on the bottom right side of the screen should show the progress of files deletion and then the number of removed files.
+When clicking on it, a confirmation pop-up will appear
 
 <img width="351" height="137" alt="image" src="https://github.com/user-attachments/assets/3a9b1414-b00e-4454-9464-353962335d62" />
+
+If "Empty Trash" is clicked, then a notification on the bottom right side of the screen will show the progress of file deletion, and then the number of removed files.
+
 <img width="345" height="75" alt="image" src="https://github.com/user-attachments/assets/c6844b1d-96b8-4f1e-9954-ea4c88351a97" />
 
 If there's no file to remove, then the message will confirm that no file was removed.
