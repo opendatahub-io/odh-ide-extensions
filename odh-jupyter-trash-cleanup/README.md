@@ -31,14 +31,6 @@ If there's no file to remove, then the message will confirm that no file was rem
 
 <img width="345" height="75" alt="image" src="https://github.com/user-attachments/assets/7b49a286-6054-4600-ae06-a38bd19f66eb" />
 
-
-
-
-
-
-
-
-
 ## Requirements
 
 - JupyterLab >= 4.0.0
