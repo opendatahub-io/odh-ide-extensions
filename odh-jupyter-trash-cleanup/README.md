@@ -15,6 +15,24 @@ When you click the Trash button or use the "Empty Trash" command, all items unde
 
 > Warning: Emptying the Trash is irreversible. Items cannot be recovered after this action.
 
+## How to use it?
+
+When the extension is installed you should see the Trash button on the file browser tool bar and also a new action called `Empty Trash`:
+
+<img width="1386" height="343" alt="image" src="https://github.com/user-attachments/assets/844c6ed0-5418-46dd-a1ca-40e38986c5d4" />
+
+When clicking on it, a confirmation pop-up will appear
+
+<img width="351" height="137" alt="image" src="https://github.com/user-attachments/assets/3a9b1414-b00e-4454-9464-353962335d62" />
+
+If "Empty Trash" is clicked, then a notification on the bottom right side of the screen will show the progress of file deletion, and then the number of removed files.
+
+<img width="345" height="75" alt="image" src="https://github.com/user-attachments/assets/c6844b1d-96b8-4f1e-9954-ea4c88351a97" />
+
+If there's no file to remove, then the message will confirm that no file was removed.
+
+<img width="345" height="75" alt="image" src="https://github.com/user-attachments/assets/7b49a286-6054-4600-ae06-a38bd19f66eb" />
+
 ## Requirements
 
 - JupyterLab >= 4.0.0
