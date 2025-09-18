@@ -2,6 +2,7 @@ import { requestAPI } from './handler';
 import { showDialog, Dialog, Notification } from '@jupyterlab/apputils';
 import { trashIcon } from './TrashIcon';
 import { ITranslator } from '@jupyterlab/translation';
+import { ITrashEmptyResponse } from './ITrashEmptyResponse';
 
 export const emptyTrashCommand = (translator: ITranslator) => {
   const trans = translator.load('odh_jupyter_trash_cleanup');
@@ -27,7 +28,21 @@ export const emptyTrashCommand = (translator: ITranslator) => {
           options: { autoClose: false }
         },
         success: {
-          message: () => trans.__('Files successfully removed from trash.')
+          message: result => {
+            const trashEmptyResponse = result as ITrashEmptyResponse;
+            console.log('' + trashEmptyResponse.deleted);
+
+            if (trashEmptyResponse.deleted > 0) {
+              return trans._n(
+                '%1 file successfully removed from trash.',
+                '%1 files successfully removed from trash.',
+                trashEmptyResponse.deleted,
+                [trashEmptyResponse.deleted]
+              );
+            } else {
+              return trans.__('No files removed, trash was already empty.');
+            }
+          }
         },
         error: { message: () => trans.__('Error removing files from trash') }
       });
