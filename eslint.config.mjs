@@ -14,6 +14,7 @@ export default [
       '**/ui-tests/**',
       '**/babel.config.js',
       '**/jest.config.js',
+      '**/labextension/**',
     ],
   },
   js.configs.recommended,
