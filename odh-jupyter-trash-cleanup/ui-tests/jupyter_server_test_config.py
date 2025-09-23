@@ -4,8 +4,10 @@
 opens the server to the world and provides access to JupyterLab
 JavaScript objects through the global window variable.
 """
-from traitlets.config import get_config
+
 from jupyterlab.galata import configure_jupyter_server
+
+from traitlets.config import get_config
 
 c = get_config()
 

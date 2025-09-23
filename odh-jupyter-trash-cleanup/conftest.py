@@ -1,8 +1,12 @@
 import pytest
 
-pytest_plugins = ("pytest_jupyter.jupyter_server", )
+pytest_plugins = ("pytest_jupyter.jupyter_server",)
 
 
 @pytest.fixture
 def jp_server_config():
-    return {"ServerApp": {"jpserver_extensions": {"odh_jupyter_trash_cleanup": True}}}
+    return {
+        "ServerApp": {
+            "jpserver_extensions": {"odh_jupyter_trash_cleanup": True}
+        }
+    }

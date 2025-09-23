@@ -1,9 +1,10 @@
 """Module for trash functions."""
-import asyncio
 
+import asyncio
 import os
 import shutil
 from pathlib import Path
+
 from .log import get_logger
 
 # For Trash cleaning using gio
@@ -14,7 +15,7 @@ LIST_TRASH_FILES_COMMAND = [GIO, "trash", "--list"]
 # For manual removal of files
 XDG_DATA_HOME = os.environ.get("XDG_DATA_HOME")
 SHARE_PATH = Path.home() / ".local" / "share"
-BASE_PATH = (Path(XDG_DATA_HOME) if XDG_DATA_HOME else SHARE_PATH)
+BASE_PATH = Path(XDG_DATA_HOME) if XDG_DATA_HOME else SHARE_PATH
 TRASH_DIR = BASE_PATH / "Trash"
 
 
@@ -37,8 +38,9 @@ class Trash:
             return 0
         # Refuse to traverse if the subdir itself is a symlink
         if p.is_symlink():
-            get_logger().warning("Refusing to traverse symlinked trash subdir: %s",
-                           p)
+            get_logger().warning(
+                "Refusing to traverse symlinked trash subdir: %s", p
+            )
             return 0
         # If a file exists where a directory is expected, remove it
         if p.is_file():
@@ -51,7 +53,9 @@ class Trash:
         for child in p.iterdir():
             try:
                 if child.is_symlink():
-                    get_logger().warning("Skipping symlink in trash: %s", child)
+                    get_logger().warning(
+                        "Skipping symlink in trash: %s", child
+                    )
                     count += 1
                     continue
                 if child.is_file():

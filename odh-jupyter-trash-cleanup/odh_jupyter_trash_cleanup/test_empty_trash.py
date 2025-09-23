@@ -1,15 +1,17 @@
 """Trash Tests"""
 
-import shutil
-import pytest
-from odh_jupyter_trash_cleanup.trash import Trash
 import odh_jupyter_trash_cleanup.trash as trash_mod
+from odh_jupyter_trash_cleanup.trash import Trash
+
+import pytest
+
 
 def test_empty_directory_returns_zero(tmp_path):
     temp_dir = tmp_path / "empty_dir"
     temp_dir.mkdir()
     result = Trash()._clear_dir(temp_dir)
     assert result == 0
+
 
 def test_directory_with_multiple_files_removes_all_and_returns_count(tmp_path):
     temp_dir = tmp_path / "dir_with_file"
@@ -21,6 +23,7 @@ def test_directory_with_multiple_files_removes_all_and_returns_count(tmp_path):
     assert result == len(files)
     for f in files:
         assert not (temp_dir / f).exists()
+
 
 def test_directory_with_subdirs_removes_all_and_returns_count(tmp_path):
     temp_dir = tmp_path / "dir_with_subdirs"
@@ -34,6 +37,7 @@ def test_directory_with_subdirs_removes_all_and_returns_count(tmp_path):
     assert not subdir1.exists()
     assert not subdir2.exists()
 
+
 def test_subdir_is_symlink_skips_it_and_returns_count(tmp_path):
     out_trash_dir = tmp_path / "other_dir"
     trash_dir = tmp_path / "has_symlink_subdir"
@@ -43,8 +47,11 @@ def test_subdir_is_symlink_skips_it_and_returns_count(tmp_path):
     sub_link = trash_dir / "sub_link"
     sub_link.symlink_to(out_trash_dir)
     result = Trash()._clear_dir(trash_dir)
-    assert result == 1  # Only the symlinked subdir was listed as entry — was not removed
-    assert sub_link.exists()  # Should still exist (not followed)
+    # Only the symlinked subdir was listed as entry — was not removed
+    assert result == 1
+    # Should still exist (not followed)
+    assert sub_link.exists()
+
 
 @pytest.mark.asyncio
 async def test_empty_trash_not_counting_info(monkeypatch, tmp_path):
