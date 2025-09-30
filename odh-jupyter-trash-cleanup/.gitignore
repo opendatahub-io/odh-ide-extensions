@@ -125,3 +125,6 @@ dmypy.json
 .yarn/
 
 .virtual_documents
+
+# Playwright
+.galata-root/
