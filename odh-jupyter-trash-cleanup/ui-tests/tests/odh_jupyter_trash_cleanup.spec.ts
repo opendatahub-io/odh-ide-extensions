@@ -55,8 +55,15 @@ test('should empty the trash', async ({ page }) => {
   
 
   // Delete the text file
-  await fileRow.click({ button: 'right' });
-  await page.getByRole('menuitem', { name: 'Delete' }).click();
+  // Ensure the new file is rendered in the browser
+  await expect(fileRow.first()).toBeVisible();
+
+  await fileRow.first().click({ button: 'right' });
+
+  const contextMenu = page.locator('.lm-Menu').last();
+  await expect(contextMenu).toBeVisible();
+
+  await contextMenu.getByRole('menuitem', { name: /^Delete/ }).click();
   await page.getByRole('button', { name: 'Delete' }).click();
   await expect(fileRow).not.toBeVisible();
 
