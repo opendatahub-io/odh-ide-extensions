@@ -30,7 +30,7 @@ test('should have a button to empty trash', async ({ page }) => {
   const button = page.getByRole('button', { name: 'Empty Trash' });
 
   expect(button).toBeVisible();
-  await expect(button).toHaveCSS('pointer-events', 'auto');
+  await expect(button).toBeEnabled();
 });
 
 
