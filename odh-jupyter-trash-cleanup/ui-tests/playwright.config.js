@@ -12,8 +12,12 @@ try {
 } catch {}
 fs.mkdirSync(GALATA_ROOT, { recursive: true });
 
+// Ensure tests see the same XDG data dir as the server
+process.env.XDG_DATA_HOME = GALATA_ROOT;
+
 module.exports = {
   ...baseConfig,
+  workers: 1,
   webServer: {
     command: 'jlpm start',
     url: 'http://localhost:8888/lab',

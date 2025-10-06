@@ -30,6 +30,7 @@ test('should have a button to empty trash', async ({ page }) => {
   const button = page.getByRole('button', { name: 'Empty Trash' });
 
   expect(button).toBeVisible();
+  await expect(button).toHaveCSS('pointer-events', 'auto');
 });
 
 
@@ -60,11 +61,9 @@ test('should empty the trash', async ({ page }) => {
   await page.getByRole('button', { name: 'Move to Trash' }).click();
   await expect(fileRow).not.toBeVisible();
 
-
-  // Check if the file is in the trash? - is this the right approach?
-  const trashLocation = process.env.XDG_DATA_HOME
-    ? path.join(process.env.XDG_DATA_HOME, 'Trash', 'files')
-    : path.join(process.env.HOME || '', '.local/share/Trash/files');
+  const xdgDataHome = process.env.XDG_DATA_HOME
+    || path.resolve(__dirname, '..', '..', '..', '.galata-root');
+  const trashLocation = path.join(xdgDataHome, 'Trash', 'files');
 
   if (!fs.existsSync(trashLocation)) {
     throw new Error(`Trash folder not found: ${trashLocation}`);
@@ -84,6 +83,7 @@ test('should empty the trash', async ({ page }) => {
 
 
   // Check if the trash is empty
+  await page.waitForTimeout(200);
   const files2 = fs.readdirSync(trashLocation);
   expect(files2.length).toBe(0);
   
