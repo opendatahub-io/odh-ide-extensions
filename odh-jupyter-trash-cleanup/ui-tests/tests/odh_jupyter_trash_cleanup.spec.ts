@@ -82,9 +82,12 @@ test('should empty the trash', async ({ page }) => {
   await expect(dialog).not.toBeVisible();
 
 
-  // Check if the trash is empty
-  await page.waitForTimeout(200);
-  const files2 = fs.readdirSync(trashLocation);
-  expect(files2.length).toBe(0);
+// Check if the trash is empty with polling
+await expect.poll(() => {
+  return fs.existsSync(trashLocation) ? fs.readdirSync(trashLocation).length : 0;
+}, {
+  message: 'Expected trash to be empty',
+  timeout: 2000,
+}).toBe(0);
   
 });
