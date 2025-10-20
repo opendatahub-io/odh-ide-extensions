@@ -4,9 +4,8 @@
 const baseConfig = require('@jupyterlab/galata/lib/playwright-config');
 const fs = require('fs');
 const path = require('path');
-
-// Test root for Jupyter server
 const GALATA_ROOT = path.resolve(__dirname, '..', '..', '.galata-root');
+
 try {
   fs.rmSync(GALATA_ROOT, { recursive: true, force: true });
 } catch {}
@@ -19,6 +18,7 @@ module.exports = {
   ...baseConfig,
   // disable parallel tests to avoid conflicts with the trash folder
   workers: 1,
+  globalTeardown: require.resolve('./global-teardown'),
   webServer: {
     command: 'jlpm start',
     url: 'http://localhost:8888/lab',
