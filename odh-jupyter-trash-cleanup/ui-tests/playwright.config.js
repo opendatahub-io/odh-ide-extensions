@@ -8,7 +8,9 @@ const GALATA_ROOT = path.resolve(__dirname, '..', '..', '.galata-root');
 
 try {
   fs.rmSync(GALATA_ROOT, { recursive: true, force: true });
-} catch {}
+} catch (error) {
+  console.error(`Failed to clean up Galata root (${GALATA_ROOT}):`, error.message);
+}
 fs.mkdirSync(GALATA_ROOT, { recursive: true });
 
 // Ensure tests see the same XDG data dir as the server
