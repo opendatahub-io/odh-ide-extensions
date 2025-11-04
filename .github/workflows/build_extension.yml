@@ -118,26 +118,17 @@ jobs:
       - name: Base Setup
         uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
 
-      - name: Download extension package
-        uses: actions/download-artifact@v4
-        with:
-          name: extension-artifacts
-
-      - name: Install the extension
+      - name: Install JupyterLab
         run: |
           set -eux
-          python -m pip install "jupyterlab>=4.0.0,<5" ${{ needs.build.outputs.python_name }}*.whl
+          python -m pip install -U "jupyterlab>=4.0.0,<5"
 
-      - name: Install dependencies
-        working-directory: ${{ inputs.extension }}/ui-tests
-        env:
-          YARN_ENABLE_IMMUTABLE_INSTALLS: 0
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+      - name: Install test dependencies
         run: |
-          touch yarn.lock
-          jlpm install
+          set -eux
+          make EXTENSION=${{ inputs.extension }} ui-tests-setup
 
-      - name: Install browser
+      - name: Install Playwright browsers
         run: |
           set -eux
           jlpm playwright install-deps
@@ -145,9 +136,9 @@ jobs:
         working-directory: ${{ inputs.extension }}/ui-tests
 
       - name: Execute integration tests
-        working-directory: ${{ inputs.extension }}/ui-tests
         run: |
-          jlpm playwright test
+          set -eux
+          make EXTENSION=${{ inputs.extension }} ui-tests
 
       - name: Upload Playwright Test report
         if: always()
