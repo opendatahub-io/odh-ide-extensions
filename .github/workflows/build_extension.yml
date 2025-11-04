@@ -118,17 +118,25 @@ jobs:
       - name: Base Setup
         uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
 
-      - name: Install JupyterLab
+      - name: Download extension package
+        uses: actions/download-artifact@v4
+        with:
+          name: extension-artifacts
+
+      - name: Install the extension
         run: |
           set -eux
-          python -m pip install -U "jupyterlab>=4.0.0,<5"
+          python -m pip install "jupyterlab>=4.0.0,<5" ${{ needs.build.outputs.python_name }}*.whl
 
       - name: Install test dependencies
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: 0
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         run: |
           set -eux
           make EXTENSION=${{ inputs.extension }} ui-tests-setup
 
-      - name: Install Playwright browsers
+      - name: Install browser
         run: |
           set -eux
           jlpm playwright install-deps
