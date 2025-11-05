@@ -42,3 +42,10 @@ lint: require-extension
 	$(MAKE) EXTENSION=$(EXTENSION) lint-ui
 	$(MAKE) EXTENSION=$(EXTENSION) lint-python
 	@echo "All linters completed"
+
+ui-tests-setup: require-extension
+	yarn install
+	cd $(EXTENSION) && jlpm install && jlpm build:prod
+
+ui-tests: require-extension
+	cd $(EXTENSION)/ui-tests && jlpm test

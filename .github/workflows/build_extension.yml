@@ -128,14 +128,13 @@ jobs:
           set -eux
           python -m pip install "jupyterlab>=4.0.0,<5" ${{ needs.build.outputs.python_name }}*.whl
 
-      - name: Install dependencies
-        working-directory: ${{ inputs.extension }}/ui-tests
+      - name: Install test dependencies
         env:
           YARN_ENABLE_IMMUTABLE_INSTALLS: 0
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         run: |
-          touch yarn.lock
-          jlpm install
+          set -eux
+          make EXTENSION=${{ inputs.extension }} ui-tests-setup
 
       - name: Install browser
         run: |
@@ -145,9 +144,9 @@ jobs:
         working-directory: ${{ inputs.extension }}/ui-tests
 
       - name: Execute integration tests
-        working-directory: ${{ inputs.extension }}/ui-tests
         run: |
-          jlpm playwright test
+          set -eux
+          make EXTENSION=${{ inputs.extension }} ui-tests
 
       - name: Upload Playwright Test report
         if: always()

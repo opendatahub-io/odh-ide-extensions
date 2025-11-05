@@ -20,32 +20,16 @@ The default configuration will produce video for failing tests and an HTML repor
 
 To run the tests, you need to:
 
-1. Install all dependencies (including test dependencies):
+1. Set up dependencies and build the extension (needed only once, or when dependencies change):
 
 ```sh
-yarn install
+make EXTENSION=odh-jupyter-trash-cleanup ui-tests-setup
 ```
 
-2. Compile the extension:
+2. Execute the [Playwright](https://playwright.dev/docs/intro) tests:
 
 ```sh
-cd odh-jupyter-trash-cleanup
-jlpm build:prod
-```
-
-> Check the extension is installed in JupyterLab.
-
-3. Install Playwright browsers (needed only once):
-
-```sh
-cd ui-tests
-jlpm playwright install
-```
-
-4. Execute the [Playwright](https://playwright.dev/docs/intro) tests:
-
-```sh
-jlpm test
+make EXTENSION=odh-jupyter-trash-cleanup ui-tests
 ```
 
 Test results will be shown in the terminal. In case of any test failures, the test report
@@ -60,31 +44,16 @@ for configuring that behavior.
 If you are comparing snapshots to validate your tests, you may need to update
 the reference snapshots stored in the repository. To do that, you need to:
 
-1. Install all dependencies (including test dependencies):
+1. Ensure dependencies are set up (if not already done):
 
 ```sh
-yarn install
+make EXTENSION=odh-jupyter-trash-cleanup ui-tests-setup
 ```
 
-2. Compile the extension:
+2. Execute the [Playwright](https://playwright.dev/docs/intro) command to update snapshots:
 
 ```sh
-cd odh-jupyter-trash-cleanup
-jlpm build:prod
-```
-
-> Check the extension is installed in JupyterLab.
-
-3. Install Playwright browsers (needed only once):
-
-```sh
-cd ui-tests
-jlpm playwright install
-```
-
-4. Execute the [Playwright](https://playwright.dev/docs/intro) command:
-
-```sh
+cd odh-jupyter-trash-cleanup/ui-tests
 jlpm test:update
 ```
 
@@ -99,37 +68,23 @@ jlpm test:update
 
 To create tests, the easiest way is to use the code generator tool of playwright:
 
-1. Install all dependencies (including test dependencies):
+1. Ensure dependencies are set up (if not already done):
 
 ```sh
-yarn install
+make EXTENSION=odh-jupyter-trash-cleanup ui-tests-setup
 ```
 
-2. Compile the extension:
+2. Start the server:
 
 ```sh
-cd odh-jupyter-trash-cleanup
-jlpm build:prod
-```
-
-> Check the extension is installed in JupyterLab.
-
-3. Install Playwright browsers (needed only once):
-
-```sh
-cd ui-tests
-jlpm playwright install
-```
-
-4. Start the server:
-
-```sh
+cd odh-jupyter-trash-cleanup/ui-tests
 jlpm start
 ```
 
-5. Execute the [Playwright code generator](https://playwright.dev/docs/codegen) in **another terminal**:
+3. Execute the [Playwright code generator](https://playwright.dev/docs/codegen) in **another terminal**:
 
 ```sh
+cd odh-jupyter-trash-cleanup/ui-tests
 jlpm playwright codegen localhost:8888
 ```
 
@@ -139,31 +94,16 @@ jlpm playwright codegen localhost:8888
 
 To debug tests, a good way is to use the inspector tool of playwright:
 
-1. Install all dependencies (including test dependencies):
+1. Ensure dependencies are set up (if not already done):
 
 ```sh
-yarn install
+make EXTENSION=odh-jupyter-trash-cleanup ui-tests-setup
 ```
 
-2. Compile the extension:
+2. Execute the Playwright tests in [debug mode](https://playwright.dev/docs/debug):
 
 ```sh
-cd odh-jupyter-trash-cleanup
-jlpm build:prod
-```
-
-> Check the extension is installed in JupyterLab.
-
-3. Install Playwright browsers (needed only once):
-
-```sh
-cd ui-tests
-jlpm playwright install
-```
-
-4. Execute the Playwright tests in [debug mode](https://playwright.dev/docs/debug):
-
-```sh
+cd odh-jupyter-trash-cleanup/ui-tests
 jlpm playwright test --debug
 ```
 
