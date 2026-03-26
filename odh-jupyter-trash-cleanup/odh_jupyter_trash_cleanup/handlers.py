@@ -9,7 +9,6 @@ import tornado
 
 
 class RouteHandler(APIHandler):
-
     trash = Trash()
 
     @tornado.web.authenticated

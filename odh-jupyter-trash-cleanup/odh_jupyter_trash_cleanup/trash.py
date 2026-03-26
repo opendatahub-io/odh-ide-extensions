@@ -38,9 +38,7 @@ class Trash:
             return 0
         # Refuse to traverse if the subdir itself is a symlink
         if p.is_symlink():
-            get_logger().warning(
-                "Refusing to traverse symlinked trash subdir: %s", p
-            )
+            get_logger().warning("Refusing to traverse symlinked trash subdir: %s", p)
             return 0
         # If a file exists where a directory is expected, remove it
         if p.is_file():
@@ -53,9 +51,7 @@ class Trash:
         for child in p.iterdir():
             try:
                 if child.is_symlink():
-                    get_logger().warning(
-                        "Skipping symlink in trash: %s", child
-                    )
+                    get_logger().warning("Skipping symlink in trash: %s", child)
                     count += 1
                     continue
                 if child.is_file():

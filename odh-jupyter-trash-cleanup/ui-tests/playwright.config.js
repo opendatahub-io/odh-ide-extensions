@@ -9,7 +9,10 @@ const GALATA_ROOT = path.resolve(__dirname, '..', '..', '.galata-root');
 try {
   fs.rmSync(GALATA_ROOT, { recursive: true, force: true });
 } catch (error) {
-  console.error(`Failed to clean up Galata root (${GALATA_ROOT}):`, error.message);
+  console.error(
+    `Failed to clean up Galata root (${GALATA_ROOT}):`,
+    error.message
+  );
 }
 fs.mkdirSync(GALATA_ROOT, { recursive: true });
 
