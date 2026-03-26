@@ -1,5 +1,4 @@
 [tool.flake8]
-enable-extensions = "G"
 max-line-length = 79
 ignore = [
   "E4",    # import formatting
