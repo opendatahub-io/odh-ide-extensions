@@ -48,16 +48,34 @@ jobs:
           set -eux
           jlpm run test
 
+      - name: Upload JavaScript coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./${{ inputs.extension }}/coverage/lcov.info
+          flags: javascript
+          name: javascript-coverage
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+
       - name: Build the extension
         run: |
           set -eux
           python -m pip install .[test]
 
-          pytest -vv -r ap --cov ${{ steps.get_python_name.outputs.python_name }}
+          pytest -vv -r ap --cov ${{ steps.get_python_name.outputs.python_name }} --cov-report=xml --cov-report=term
 
           jupyter labextension list
           jupyter labextension list 2>&1 | grep -ie "${{ inputs.extension }}.*OK"
           python -m jupyterlab.browser_check
+
+      - name: Upload Python coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./${{ inputs.extension }}/coverage.xml
+          flags: python
+          name: python-coverage
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
 
       - name: Package the extension
         run: |

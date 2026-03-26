@@ -1,0 +1,53 @@
+codecov:
+  require_ci_to_pass: yes
+  notify:
+    after_n_builds: 2  # Wait for both Python and JS coverage
+
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 2%
+        base: auto
+    patch:
+      default:
+        target: auto
+
+comment:
+  layout: "reach,diff,flags,files"
+  behavior: default
+  require_changes: false
+
+ignore:
+  - "**/__tests__/**"
+  - "**/tests/**"
+  - "**/*.test.ts"
+  - "**/*.spec.ts"
+  - "**/test_*.py"
+  - "**/conftest.py"
+  - "**/*.d.ts"
+  - "**/dist/**"
+  - "**/lib/**"
+  - "**/node_modules/**"
+  - "**/labextension/**"
+  - "**/_version.py"
+  - "**/ui-tests/**"
+  - "binder/**"
+  - "venv/**"
+
+flags:
+  python:
+    paths:
+      - "**/odh_*/**/*.py"
+    carryforward: true
+
+  javascript:
+    paths:
+      - "**/src/**/*.ts"
+      - "**/src/**/*.tsx"
+    carryforward: true

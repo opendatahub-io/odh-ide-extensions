@@ -30,5 +30,13 @@ junit-*.xml
 
 .yarn
 
+# Coverage reports
+coverage/
+.coverage
+coverage.xml
+htmlcov/
+*.lcov
+.nyc_output/
+
 # virtual environments
 venv/
