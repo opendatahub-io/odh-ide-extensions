@@ -24,10 +24,18 @@ This is a monorepo managed with [Turbo](https://turbo.build/) for efficient buil
 ```
 odh-ide-extensions/
 ├── odh-jupyter-trash-cleanup/    # JupyterLab trash cleanup extension
+├── docs/
+│   └── ARCHITECTURE.md           # Detailed architecture documentation
 ├── package.json                   # Root workspace configuration
 ├── turbo.json                     # Turbo build configuration
+├── CLAUDE.md                      # AI assistant guidance
 └── README.md                      # This file
 ```
+
+## Documentation
+
+- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)**: Comprehensive architecture documentation covering component structure, communication patterns, build pipeline, and extension development guide
+- **[CLAUDE.md](CLAUDE.md)**: Quick reference for AI assistants working with this codebase
 
 ## Development Setup
 
