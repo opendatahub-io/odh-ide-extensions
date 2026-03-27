@@ -22,7 +22,17 @@ module.exports = {
     '!src/**/*.d.ts',
     '!src/**/.ipynb_checkpoints/*'
   ],
-  coverageReporters: ['lcov', 'text'],
+  coverageDirectory: 'coverage',
+  coverageReporters: ['lcov', 'text', 'text-summary', 'html'],
+  // TODO: Re-enable coverage thresholds once tests are implemented
+  // coverageThreshold: {
+  //   global: {
+  //     branches: 70,
+  //     functions: 70,
+  //     lines: 70,
+  //     statements: 70
+  //   }
+  // },
   testRegex: 'src/.*/.*.spec.ts[x]?$',
   transformIgnorePatterns: [`/node_modules/(?!${esModules}).+`]
 };
