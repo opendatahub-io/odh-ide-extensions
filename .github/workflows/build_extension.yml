@@ -16,6 +16,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    permissions:
+      contents: read
     defaults:
       run:
         working-directory: "./${{ inputs.extension }}"
@@ -49,7 +51,7 @@ jobs:
           jlpm run test
 
       - name: Upload JavaScript coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           files: ./${{ inputs.extension }}/coverage/lcov.info
           flags: javascript
@@ -69,7 +71,7 @@ jobs:
           python -m jupyterlab.browser_check
 
       - name: Upload Python coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           files: ./${{ inputs.extension }}/coverage.xml
           flags: python

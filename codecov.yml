@@ -43,6 +43,7 @@ ignore:
 flags:
   python:
     paths:
+      - "**/odh_*/*.py"
       - "**/odh_*/**/*.py"
     carryforward: true
 
