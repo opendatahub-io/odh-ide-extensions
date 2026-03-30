@@ -91,3 +91,35 @@ ignore = ["W002"]
 [tool.black]
 line-length = 88
 target-version = ["py39"]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "odh_jupyter_trash_cleanup/tests",
+]
+addopts = "--verbose --color=yes"
+
+[tool.coverage.run]
+branch = true
+source = ["odh_jupyter_trash_cleanup"]
+omit = [
+    "odh_jupyter_trash_cleanup/tests/*",
+    "odh_jupyter_trash_cleanup/test_*.py",
+    "odh_jupyter_trash_cleanup/_version.py",
+    "odh_jupyter_trash_cleanup/labextension/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if __name__ == .__main__.:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+precision = 2
+show_missing = true
+
+[tool.coverage.xml]
+output = "coverage.xml"
