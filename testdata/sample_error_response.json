@@ -1,0 +1,5 @@
+{
+  "success": false,
+  "message": "Permission denied: unable to access trash directory",
+  "error_code": "EACCES"
+}

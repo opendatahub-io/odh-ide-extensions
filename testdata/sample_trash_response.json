@@ -1,0 +1,6 @@
+{
+  "success": true,
+  "message": "Trash emptied successfully",
+  "deleted_count": 5,
+  "freed_bytes": 1048576
+}
