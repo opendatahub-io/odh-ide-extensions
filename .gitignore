@@ -40,3 +40,4 @@ htmlcov/
 
 # virtual environments
 venv/
+.venv/
