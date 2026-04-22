@@ -18,6 +18,18 @@ jest.mock('../TrashIcon', () => ({
 
 import { emptyTrashCommand } from '../emptyTrashCommand';
 
+function createMockTranslator(loadMock?: jest.Mock) {
+  const defaultLoad = () => ({
+    __: (str: string) => str,
+    _n: (singular: string, plural: string, n: number) =>
+      n === 1 ? singular : plural
+  });
+
+  return {
+    load: loadMock ?? jest.fn().mockImplementation(defaultLoad)
+  };
+}
+
 describe('emptyTrashCommand module', () => {
   describe('command structure', () => {
     it('should export emptyTrashCommand function', () => {
@@ -25,14 +37,7 @@ describe('emptyTrashCommand module', () => {
     });
 
     it('should return an object with required properties', () => {
-      const mockTranslator = {
-        load: () => ({
-          __: (str: string) => str,
-          _n: (singular: string, plural: string, n: number) =>
-            n === 1 ? singular : plural
-        })
-      };
-
+      const mockTranslator = createMockTranslator();
       const command = emptyTrashCommand(mockTranslator as any);
 
       expect(command).toHaveProperty('label');
@@ -42,14 +47,7 @@ describe('emptyTrashCommand module', () => {
     });
 
     it('should have correct label text', () => {
-      const mockTranslator = {
-        load: () => ({
-          __: (str: string) => str,
-          _n: (singular: string, plural: string, n: number) =>
-            n === 1 ? singular : plural
-        })
-      };
-
+      const mockTranslator = createMockTranslator();
       const command = emptyTrashCommand(mockTranslator as any);
 
       expect(command.label).toBe('Empty Trash');
@@ -57,14 +55,7 @@ describe('emptyTrashCommand module', () => {
     });
 
     it('should have execute as async function', () => {
-      const mockTranslator = {
-        load: () => ({
-          __: (str: string) => str,
-          _n: (singular: string, plural: string, n: number) =>
-            n === 1 ? singular : plural
-        })
-      };
-
+      const mockTranslator = createMockTranslator();
       const command = emptyTrashCommand(mockTranslator as any);
 
       expect(typeof command.execute).toBe('function');
@@ -78,8 +69,7 @@ describe('emptyTrashCommand module', () => {
         _n: (singular: string, plural: string, n: number) =>
           n === 1 ? singular : plural
       });
-
-      const mockTranslator = { load: loadMock };
+      const mockTranslator = createMockTranslator(loadMock);
 
       emptyTrashCommand(mockTranslator as any);
 
