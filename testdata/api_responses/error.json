@@ -1,0 +1,5 @@
+{
+  "success": false,
+  "message": "Failed to empty trash",
+  "error": "Permission denied"
+}

@@ -1,0 +1,21 @@
+{
+  "files": [
+    {
+      "name": "document.pdf",
+      "size": 1048576,
+      "deletedAt": "2024-01-15T10:30:00Z"
+    },
+    {
+      "name": "image.png",
+      "size": 524288,
+      "deletedAt": "2024-01-14T15:45:00Z"
+    },
+    {
+      "name": "notes.txt",
+      "size": 1024,
+      "deletedAt": "2024-01-13T09:00:00Z"
+    }
+  ],
+  "totalSize": 1573888,
+  "count": 3
+}
