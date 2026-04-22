@@ -4,8 +4,11 @@
 
 jest.mock('@jupyterlab/apputils', () => ({
   showDialog: jest.fn(),
-  Dialog: { okButton: jest.fn() },
-  Notification: { emit: jest.fn() }
+  Dialog: {
+    cancelButton: jest.fn(() => ({ accept: false })),
+    okButton: jest.fn(() => ({ accept: true }))
+  },
+  Notification: { promise: jest.fn() }
 }));
 
 jest.mock('../handler', () => ({
@@ -16,6 +19,8 @@ jest.mock('../TrashIcon', () => ({
   trashIcon: { name: 'trash-icon' }
 }));
 
+import { showDialog, Notification } from '@jupyterlab/apputils';
+import { requestAPI } from '../handler';
 import { emptyTrashCommand } from '../emptyTrashCommand';
 
 function createMockTranslator(loadMock?: jest.Mock) {
@@ -31,6 +36,10 @@ function createMockTranslator(loadMock?: jest.Mock) {
 }
 
 describe('emptyTrashCommand module', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('command structure', () => {
     it('should export emptyTrashCommand function', () => {
       expect(typeof emptyTrashCommand).toBe('function');
@@ -74,6 +83,63 @@ describe('emptyTrashCommand module', () => {
       emptyTrashCommand(mockTranslator as any);
 
       expect(loadMock).toHaveBeenCalledWith('odh_jupyter_trash_cleanup');
+    });
+  });
+
+  describe('execute behavior', () => {
+    it('should show confirmation dialog when executed', async () => {
+      (showDialog as jest.Mock).mockResolvedValue({
+        button: { accept: false }
+      });
+      const command = emptyTrashCommand(createMockTranslator() as any);
+
+      await command.execute();
+
+      expect(showDialog).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: 'Empty all items from Trash?',
+          body: 'All items in the Trash will be permanently deleted.'
+        })
+      );
+    });
+
+    it('should not empty trash when dialog is cancelled', async () => {
+      (showDialog as jest.Mock).mockResolvedValue({
+        button: { accept: false }
+      });
+      const command = emptyTrashCommand(createMockTranslator() as any);
+
+      await command.execute();
+
+      expect(requestAPI).not.toHaveBeenCalled();
+      expect(Notification.promise).not.toHaveBeenCalled();
+    });
+
+    it('should send POST request when dialog is accepted', async () => {
+      (showDialog as jest.Mock).mockResolvedValue({
+        button: { accept: true }
+      });
+      const command = emptyTrashCommand(createMockTranslator() as any);
+
+      await command.execute();
+
+      expect(requestAPI).toHaveBeenCalledWith('empty-trash', { method: 'POST' });
+      expect(Notification.promise).toHaveBeenCalled();
+    });
+
+    it('should wrap API call with Notification.promise', async () => {
+      (showDialog as jest.Mock).mockResolvedValue({
+        button: { accept: true }
+      });
+      const command = emptyTrashCommand(createMockTranslator() as any);
+
+      await command.execute();
+
+      const notificationCall = (Notification.promise as jest.Mock).mock
+        .calls[0][1];
+      expect(notificationCall.pending.message).toBe('Emptying Trash...');
+      expect(notificationCall.error.message).toBeInstanceOf(Function);
+      expect(notificationCall.success.message).toBeInstanceOf(Function);
     });
   });
 });

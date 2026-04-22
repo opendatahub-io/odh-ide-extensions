@@ -42,7 +42,8 @@ describe('odh-jupyter-trash-cleanup plugin', () => {
 
   it('should require ICommandPalette and ITranslator', () => {
     expect(plugin.requires).toBeDefined();
-    expect(plugin.requires!.length).toBeGreaterThanOrEqual(2);
+    expect(plugin.requires).toContain(mockICommandPalette);
+    expect(plugin.requires).toContain(mockITranslator);
   });
 
   it('should have a description', () => {

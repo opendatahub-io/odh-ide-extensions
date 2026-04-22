@@ -100,9 +100,9 @@ describe('handler module', () => {
         networkError
       );
 
-      await expect(requestAPI('empty-trash')).rejects.toThrow();
       try {
         await requestAPI('empty-trash');
+        fail('Expected NetworkError to be thrown');
       } catch (error) {
         expect((error as Error).name).toBe('NetworkError');
       }
@@ -117,9 +117,9 @@ describe('handler module', () => {
         mockResponse
       );
 
-      await expect(requestAPI('empty-trash')).rejects.toThrow();
       try {
         await requestAPI('empty-trash');
+        fail('Expected ResponseError to be thrown');
       } catch (error) {
         expect((error as Error).name).toBe('ResponseError');
       }
