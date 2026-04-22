@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "target": "ES2018",
+    "skipLibCheck": true
+  },
+  "references": [
+    { "path": "./odh-jupyter-trash-cleanup" }
+  ],
+  "files": []
+}
