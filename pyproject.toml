@@ -13,7 +13,6 @@ ignore = [
   "W503",  # line break before binary operator
   "W504"   # breaks after binary operators
 ]
-import-order-style = "google"
 
 [tool.black]
 line-length = 79
