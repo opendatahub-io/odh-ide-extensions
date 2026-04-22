@@ -1,14 +1,17 @@
 <!--- Provide a general summary of your changes in the Title above -->
 
 ## Description
+
 <!--- Describe your changes in detail -->
 
 ## How Has This Been Tested?
+
 <!--- Please describe in detail how you tested your changes. -->
 <!--- Include details of your testing environment, and the tests you ran to -->
 <!--- see how your change affects other areas of the code, etc. -->
 
 ## Merge criteria:
+
 <!--- This PR will be merged by any repository approver when it meets all the points in the checklist -->
 <!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
 

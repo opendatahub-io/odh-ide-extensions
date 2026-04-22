@@ -7,10 +7,7 @@
       "outputs": ["dist/**", "build/**"]
     },
     "lint": {
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        "$TURBO_ROOT$/packages/eslint-config/**/*"
-      ]
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/eslint-config/**/*"]
     },
     "test": {},
     "build:prod": {}

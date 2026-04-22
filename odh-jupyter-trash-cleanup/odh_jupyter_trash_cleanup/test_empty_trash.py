@@ -1,9 +1,8 @@
 """Trash Tests"""
 
 import odh_jupyter_trash_cleanup.trash as trash_mod
-from odh_jupyter_trash_cleanup.trash import Trash
-
 import pytest
+from odh_jupyter_trash_cleanup.trash import Trash
 
 
 def test_empty_directory_returns_zero(tmp_path):

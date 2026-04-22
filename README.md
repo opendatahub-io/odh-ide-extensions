@@ -4,7 +4,6 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/opendatahub-io/odh-ide-extensions/HEAD)
 [![codecov](https://codecov.io/gh/opendatahub-io/odh-ide-extensions/branch/main/graph/badge.svg)](https://codecov.io/gh/opendatahub-io/odh-ide-extensions)
 
-
 Welcome to the OpenDataHub IDE Extensions repository! This repository is a collection of IDE extensions for the Open Data Hub ecosystem, providing enhanced functionality for data science and development workflows.
 
 ## Extensions
@@ -14,6 +13,7 @@ Welcome to the OpenDataHub IDE Extensions repository! This repository is a colle
 A JupyterLab extension that provides a convenient way to empty the Trash directory directly from the JupyterLab UI. This extension helps users manage their workspace by permanently removing deleted files.
 
 **Key Features:**
+
 - One-click trash cleanup from JupyterLab interface
 - Follows XDG Base Directory specification
 - Server and frontend components for seamless integration
@@ -49,12 +49,14 @@ odh-ide-extensions/
 ### Getting Started
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/opendatahub-io/odh-ide-extensions.git
    cd odh-ide-extensions
    ```
 
 2. **Install dependencies:**
+
    ```bash
    npm install
    ```
@@ -74,7 +76,6 @@ odh-ide-extensions/
 ## Contributing
 
 We welcome contributions to improve and expand the Open Data Hub IDE extensions ecosystem!
-
 
 ### Adding New Extensions
 
