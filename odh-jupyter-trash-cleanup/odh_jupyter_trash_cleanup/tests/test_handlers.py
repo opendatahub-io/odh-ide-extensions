@@ -2,9 +2,9 @@
 
 import json
 
-import pytest
-
 from odh_jupyter_trash_cleanup.handlers import RouteHandler, setup_handlers
+
+import pytest
 
 
 class _FakeTrash:
