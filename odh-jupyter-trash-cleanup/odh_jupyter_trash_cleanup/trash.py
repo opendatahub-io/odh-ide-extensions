@@ -52,7 +52,6 @@ class Trash:
             try:
                 if child.is_symlink():
                     get_logger().warning("Skipping symlink in trash: %s", child)
-                    count += 1
                     continue
                 if child.is_file():
                     child.unlink(missing_ok=True)
