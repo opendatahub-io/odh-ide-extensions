@@ -15,11 +15,13 @@ This is a monorepo for OpenDataHub IDE extensions, managed with Turbo for effici
 Each JupyterLab extension follows a dual-component architecture:
 
 - **Server extension** (Python): Jupyter Server extension that handles backend logic
+
   - Located in `odh_jupyter_trash_cleanup/` (Python package with underscores)
   - Registers server handlers and API endpoints
   - For trash cleanup: manages XDG Base Directory spec compliance (`$XDG_DATA_HOME/Trash` or `~/.local/share/Trash`)
 
 - **Frontend extension** (TypeScript): JupyterLab UI components
+
   - Located in `src/` (TypeScript sources) → compiled to `lib/`
   - Located in `style/` (CSS styles)
   - NPM package name uses hyphens (`odh-jupyter-trash-cleanup`)
@@ -148,12 +150,14 @@ When adding a new extension to the monorepo:
 ## Important Patterns
 
 ### API Communication
+
 - Frontend uses `requestAPI()` helper from `handler.ts` pattern
 - Backend handlers extend `APIHandler` from `jupyter_server.base.handlers`
 - API namespace matches NPM package name (e.g., `/odh-jupyter-trash-cleanup/endpoint`)
 - All requests are authenticated via JupyterLab's token system
 
 ### Extension Registration
+
 - Frontend: Export default `JupyterFrontEndPlugin` from `src/index.ts`
 - Backend: Implement three functions in `__init__.py`:
   - `_jupyter_labextension_paths()` - Returns labextension metadata
@@ -161,5 +165,6 @@ When adding a new extension to the monorepo:
   - `_load_jupyter_server_extension()` - Loads and configures the server extension
 
 ### Async Operations
+
 - Backend: Use `asyncio.to_thread()` for blocking I/O operations
 - Frontend: Use `Notification.promise()` pattern for user feedback on async operations

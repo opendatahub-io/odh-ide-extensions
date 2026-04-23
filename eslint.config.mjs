@@ -14,8 +14,8 @@ export default [
       '**/ui-tests/**',
       '**/babel.config.js',
       '**/jest.config.js',
-      '**/labextension/**',
-    ],
+      '**/labextension/**'
+    ]
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -28,22 +28,26 @@ export default [
         {
           selector: 'interface',
           format: ['PascalCase'],
-          custom: { regex: '^I[A-Z]', match: true },
-        },
+          custom: { regex: '^I[A-Z]', match: true }
+        }
       ],
       '@typescript-eslint/no-unused-vars': ['warn', { args: 'none' }],
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-namespace': 'off',
-      '@typescript-eslint/no-use-before-define': 'off',
-    },
+      '@typescript-eslint/no-use-before-define': 'off'
+    }
   },
   // JS/TS common stylistic rules
   {
     rules: {
-      quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: false }],
+      quotes: [
+        'error',
+        'single',
+        { avoidEscape: true, allowTemplateLiterals: false }
+      ],
       curly: ['error', 'all'],
       eqeqeq: 'error',
-      'prefer-arrow-callback': 'error',
-    },
-  },
-]; 
+      'prefer-arrow-callback': 'error'
+    }
+  }
+];

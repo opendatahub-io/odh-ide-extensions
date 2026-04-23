@@ -58,6 +58,7 @@ Each JupyterLab extension in this repository follows a **dual-component architec
 **Location**: `src/` directory (compiled to `lib/`)
 
 **Key Responsibilities**:
+
 - Register JupyterLab plugins and commands
 - Handle UI interactions (buttons, dialogs, notifications)
 - Make HTTP requests to the backend API
@@ -86,6 +87,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
 **Location**: Python package directory with underscores (e.g., `odh_jupyter_trash_cleanup/`)
 
 **Key Responsibilities**:
+
 - Register Jupyter Server extensions
 - Handle HTTP API requests from frontend
 - Execute privileged operations (file system access, system commands)
@@ -138,11 +140,13 @@ src/
 **Key Frontend Flow**:
 
 1. **Plugin Activation** (`index.ts`):
+
    - Plugin is auto-started when JupyterLab loads
    - Registers command `odh-ide:clear-trash`
    - Adds command to command palette
 
 2. **Command Execution** (`emptyTrashCommand.ts`):
+
    - Shows confirmation dialog
    - Calls backend API via `requestAPI`
    - Displays progress notification
@@ -170,11 +174,13 @@ odh_jupyter_trash_cleanup/
 **Key Backend Flow**:
 
 1. **Extension Loading**:
+
    - Jupyter Server discovers extension via `_jupyter_server_extension_points()`
    - Calls `_load_jupyter_server_extension()` to set up handlers
    - Registers HTTP routes with Tornado web application
 
 2. **Request Handling** (`handlers.py`):
+
    - `RouteHandler` extends `APIHandler` from jupyter_server
    - Route pattern: `{base_url}/odh-jupyter-trash-cleanup/empty-trash`
    - POST method: authenticated, async operation
@@ -199,6 +205,7 @@ schema/
 ```
 
 **plugin.json** defines:
+
 - Toolbar contributions (adds button to FileBrowser toolbar)
 - Command mapping
 - Button rank (display order)
@@ -268,6 +275,7 @@ style/
 1. **Authentication**: All requests use JupyterLab's `ServerConnection.makeRequest()` which handles authentication tokens automatically.
 
 2. **Error Handling**:
+
    - Frontend: Try-catch in `requestAPI`, `ServerConnection.ResponseError` for HTTP errors
    - Backend: Exception handling in handlers, returns 500 with error message
 
@@ -453,14 +461,14 @@ User interacts with extension
 
 ### Naming Rules
 
-| Component | Pattern | Example |
-|-----------|---------|---------|
-| Extension directory | `odh-{purpose}` (kebab-case) | `odh-jupyter-trash-cleanup` |
-| NPM package name | Same as directory | `odh-jupyter-trash-cleanup` |
-| Python package name | Replace hyphens with underscores | `odh_jupyter_trash_cleanup` |
-| Plugin ID | `{package}:plugin` | `odh-jupyter-trash-cleanup:plugin` |
-| Command ID | `{namespace}:{action}` | `odh-ide:clear-trash` |
-| API namespace | Same as NPM package | `odh-jupyter-trash-cleanup` |
+| Component           | Pattern                          | Example                            |
+| ------------------- | -------------------------------- | ---------------------------------- |
+| Extension directory | `odh-{purpose}` (kebab-case)     | `odh-jupyter-trash-cleanup`        |
+| NPM package name    | Same as directory                | `odh-jupyter-trash-cleanup`        |
+| Python package name | Replace hyphens with underscores | `odh_jupyter_trash_cleanup`        |
+| Plugin ID           | `{package}:plugin`               | `odh-jupyter-trash-cleanup:plugin` |
+| Command ID          | `{namespace}:{action}`           | `odh-ide:clear-trash`              |
+| API namespace       | Same as NPM package              | `odh-jupyter-trash-cleanup`        |
 
 ### Directory Structure
 
@@ -543,6 +551,7 @@ cp -r ../odh-jupyter-trash-cleanup/{package.json,pyproject.toml,tsconfig.json} .
 #### 2. Update Package Metadata
 
 **package.json**:
+
 ```json
 {
   "name": "odh-{new-extension}",
@@ -564,6 +573,7 @@ cp -r ../odh-jupyter-trash-cleanup/{package.json,pyproject.toml,tsconfig.json} .
 ```
 
 **pyproject.toml**:
+
 ```toml
 [project]
 name = "odh_{new_extension}"
@@ -578,6 +588,7 @@ mkdir -p src style schema odh_{new_extension} jupyter-config/server-config
 #### 4. Implement Frontend Plugin
 
 **src/index.ts**:
+
 ```typescript
 import { JupyterFrontEndPlugin } from '@jupyterlab/application';
 
@@ -585,7 +596,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
   id: 'odh-{new-extension}:plugin',
   description: 'Extension description',
   autoStart: true,
-  activate: (app) => {
+  activate: app => {
     console.log('Extension activated');
     // Add commands, UI components, etc.
   }
@@ -596,7 +607,8 @@ export default plugin;
 
 #### 5. Implement Backend Extension
 
-**odh_{new_extension}/__init__.py**:
+**odh\_{new_extension}/**init**.py**:
+
 ```python
 def _jupyter_labextension_paths():
     return [{"src": "labextension", "dest": "odh-{new-extension}"}]
@@ -610,7 +622,8 @@ def _load_jupyter_server_extension(server_app):
     server_app.log.info("Registered odh_{new_extension} extension")
 ```
 
-**odh_{new_extension}/handlers.py**:
+**odh\_{new_extension}/handlers.py**:
+
 ```python
 from jupyter_server.base.handlers import APIHandler
 from jupyter_server.utils import url_path_join
@@ -629,7 +642,8 @@ def setup_handlers(web_app):
 
 #### 6. Configure Server Auto-Enable
 
-**jupyter-config/server-config/odh_{new_extension}.json**:
+**jupyter-config/server-config/odh\_{new_extension}.json**:
+
 ```json
 {
   "ServerApp": {
@@ -643,12 +657,10 @@ def setup_handlers(web_app):
 #### 7. Add to Monorepo Workspace
 
 **Root package.json**:
+
 ```json
 {
-  "workspaces": [
-    "odh-jupyter-trash-cleanup",
-    "odh-{new-extension}"
-  ]
+  "workspaces": ["odh-jupyter-trash-cleanup", "odh-{new-extension}"]
 }
 ```
 
@@ -678,7 +690,9 @@ Extensions register commands that can be invoked from multiple sources (toolbar,
 ```typescript
 commands.addCommand('extension:action', {
   label: 'Action Label',
-  execute: () => { /* implementation */ }
+  execute: () => {
+    /* implementation */
+  }
 });
 ```
 
@@ -689,7 +703,7 @@ JupyterLab plugins declare dependencies, which are injected during activation:
 ```typescript
 const plugin: JupyterFrontEndPlugin<void> = {
   requires: [ICommandPalette, ITranslator],
-  activate: (app, palette, translator) => { }
+  activate: (app, palette, translator) => {}
 };
 ```
 
@@ -719,7 +733,7 @@ Frontend uses promise-based notifications for async operations:
 ```typescript
 Notification.promise(apiCall(), {
   pending: 'Processing...',
-  success: (result) => `Done: ${result}`,
+  success: result => `Done: ${result}`,
   error: 'Failed'
 });
 ```

@@ -39,14 +39,14 @@ jobs:
       - name: Check version
         run: |
           set -o pipefail
-  
+
           # Get the version from the code
           CODE_VERSION=$(jq -r '.version' ./odh-jupyter-trash-cleanup/package.json)
           if [ -z "$CODE_VERSION" ]; then
               echo "::error title='Code version not found'::Failed to extract version from package.json."
               exit 1
           fi
-          
+
           # Check the event type and get the tag accordingly
           if [[ "${{ github.event_name }}" == "push" ]]; then
             # For a push event, the tag is in github.ref
@@ -64,7 +64,7 @@ jobs:
             echo "::error title='Provided tag does not match version in code'::Provided tag: $PROVIDED_TAG, Code version: v$CODE_VERSION."
             exit 1
           fi
-          
+
           echo "::info title='Tag validation successful'::Provided tag '$PROVIDED_TAG' matches code version 'v$CODE_VERSION'."
       - name: Build package
         run: |

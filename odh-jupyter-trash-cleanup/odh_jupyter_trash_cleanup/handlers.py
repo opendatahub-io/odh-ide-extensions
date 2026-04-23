@@ -1,11 +1,9 @@
 """Handler for Trash API methods"""
 
+import tornado
 from jupyter_server.base.handlers import APIHandler
 from jupyter_server.utils import url_path_join
-
 from odh_jupyter_trash_cleanup.trash import Trash
-
-import tornado
 
 
 class RouteHandler(APIHandler):
