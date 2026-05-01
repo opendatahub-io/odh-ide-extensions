@@ -15,6 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Runs linting, pytest (Python), jest (TypeScript), and build via reusable workflow
   build_extensions:
     uses: ./.github/workflows/build_extension.yml
     with:
