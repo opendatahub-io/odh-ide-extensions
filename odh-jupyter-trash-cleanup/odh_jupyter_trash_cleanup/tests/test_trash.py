@@ -85,7 +85,7 @@ class TestClearDir:
         assert not subdir2.exists()
 
     def test_symlink_skipped_not_followed(self, tmp_path):
-        """Test _clear_dir skips symlinks for safety."""
+        """Test _clear_dir skips symlinks for safety (not counted as removed)."""
         out_trash_dir = tmp_path / "other_dir"
         trash_dir = tmp_path / "has_symlink_subdir"
         trash_dir.mkdir()
@@ -93,8 +93,8 @@ class TestClearDir:
         sub_link = trash_dir / "sub_link"
         sub_link.symlink_to(out_trash_dir)
         result = Trash()._clear_dir(trash_dir)
-        assert result == 1
-        assert sub_link.exists()
+        assert result == 0  # Symlinks are skipped, not counted as removed
+        assert sub_link.exists()  # Symlink should still exist (not followed)
 
 
 class TestEmptyTrash:
