@@ -25,3 +25,4 @@ jobs:
       matrix:
         extension:
           - odh-jupyter-trash-cleanup
+          - odh-jupyter-pvc-alerts

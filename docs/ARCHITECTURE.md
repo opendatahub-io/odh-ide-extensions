@@ -216,6 +216,25 @@ style/
 
 ---
 
+## PVC Storage Alerts Extension
+
+`odh-jupyter-pvc-alerts` follows the same server/frontend packaging pattern:
+
+- `PVCAlertsConfig` selects an administrator-controlled filesystem path using
+  server configuration, `ODH_PVC_MOUNT_PATH`, or `ServerApp.root_dir`.
+- `GET /odh-jupyter-pvc-alerts/usage` is authenticated and reports filesystem
+  byte capacity using `os.statvfs()` via `asyncio.to_thread()`. Clients cannot
+  select arbitrary paths. Errors return HTTP 503 without filesystem details.
+- The frontend loads `odh-jupyter-pvc-alerts:plugin` settings and polls serially
+  while JupyterLab is open. It maintains one warning per high-usage episode,
+  respects dismissal, and clears the notification after recovery.
+- This measures the containing filesystem, not Kubernetes PVC metadata or
+  per-directory quotas. See [the extension README](../odh-jupyter-pvc-alerts/README.md)
+  for configuration, capacity semantics, and limitations.
+
+Both extensions run through the reusable CI workflow. Concurrency groups and
+package artifacts are scoped by extension to allow independent matrix builds.
+
 ## Communication Flow
 
 ### Frontend → Backend Request Flow

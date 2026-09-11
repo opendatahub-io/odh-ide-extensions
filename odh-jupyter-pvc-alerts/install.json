@@ -1,0 +1,5 @@
+{
+  "packageManager": "python",
+  "packageName": "odh_jupyter_pvc_alerts",
+  "uninstallInstructions": "Use pip uninstall odh_jupyter_pvc_alerts to uninstall this extension."
+}

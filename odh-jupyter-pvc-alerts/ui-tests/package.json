@@ -1,0 +1,13 @@
+{
+    "name": "odh-jupyter-pvc-alerts-ui-tests",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "start": "jupyter lab --config jupyter_server_test_config.py",
+        "test": "jlpm playwright test"
+    },
+    "devDependencies": {
+        "@jupyterlab/galata": "^5.0.5",
+        "@playwright/test": "^1.37.0"
+    }
+}

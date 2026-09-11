@@ -9,7 +9,8 @@
     "skipLibCheck": true
   },
   "references": [
-    { "path": "./odh-jupyter-trash-cleanup" }
+    { "path": "./odh-jupyter-trash-cleanup" },
+    { "path": "./odh-jupyter-pvc-alerts" }
   ],
   "files": []
 }

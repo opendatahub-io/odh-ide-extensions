@@ -6,6 +6,8 @@
     "license": "Apache-2.0",
     "workspaces": [
         "odh-jupyter-trash-cleanup",
+        "odh-jupyter-pvc-alerts",
+        "odh-jupyter-pvc-alerts/ui-tests",
         "odh-jupyter-trash-cleanup/ui-tests"
     ],
     "scripts": {

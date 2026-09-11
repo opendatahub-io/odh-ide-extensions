@@ -18,6 +18,19 @@ A JupyterLab extension that provides a convenient way to empty the Trash directo
 - Follows XDG Base Directory specification
 - Server and frontend components for seamless integration
 
+### [odh-jupyter-pvc-alerts](./odh-jupyter-pvc-alerts/)
+
+A JupyterLab extension that warns users when notebook PVC storage is almost full.
+It monitors a configurable mounted filesystem without Kubernetes API access.
+
+**Key Features:**
+- Configurable storage path, warning threshold (default 90%), and check interval
+- Persistent, deduplicated notifications that clear when storage recovers
+- Authenticated Python API and JupyterLab settings integration
+
+See the [extension README](./odh-jupyter-pvc-alerts/README.md) for installation,
+configuration, and shared-filesystem limitations.
+
 ## Repository Structure
 
 This is a monorepo managed with [Turbo](https://turbo.build/) for efficient build orchestration and workspace management.
@@ -25,6 +38,7 @@ This is a monorepo managed with [Turbo](https://turbo.build/) for efficient buil
 ```text
 odh-ide-extensions/
 ├── odh-jupyter-trash-cleanup/    # JupyterLab trash cleanup extension
+├── odh-jupyter-pvc-alerts/       # Notebook PVC storage warnings
 ├── docs/
 │   └── ARCHITECTURE.md           # Detailed architecture documentation
 ├── package.json                   # Root workspace configuration

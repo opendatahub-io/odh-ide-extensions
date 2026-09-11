@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "Notebook Storage Alerts",
+  "description": "Get a warning when your notebook storage reaches the usage level you choose. Alerts do not delete files or add storage.",
+  "type": "object",
+  "jupyter.lab.internationalization": {
+    "domain": "odh_jupyter_pvc_alerts"
+  },
+  "additionalProperties": false,
+  "properties": {
+    "enabled": {
+      "title": "Show storage warnings",
+      "description": "Check storage while JupyterLab is open. Turn this off to stop checks and clear the current warning; your files are not changed.",
+      "type": "boolean",
+      "default": true
+    },
+    "warningThreshold": {
+      "title": "Warn when storage usage reaches (%)",
+      "description": "Choose a value from 1 to 100. The default, 90, warns when 90% of usable space is used (about 10% remains). Choose a lower value for an earlier warning.",
+      "type": "number",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 90
+    },
+    "pollInterval": {
+      "title": "Check storage every (seconds)",
+      "description": "Enter a whole number from 10 to 86400. The default, 60, checks about once a minute. Shorter intervals check more often; they do not free up space.",
+      "type": "integer",
+      "minimum": 10,
+      "maximum": 86400,
+      "default": 60
+    }
+  }
+}

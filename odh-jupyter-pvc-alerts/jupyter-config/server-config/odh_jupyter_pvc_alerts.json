@@ -1,0 +1,7 @@
+{
+  "ServerApp": {
+    "jpserver_extensions": {
+      "odh_jupyter_pvc_alerts": true
+    }
+  }
+}

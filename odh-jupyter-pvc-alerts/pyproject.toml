@@ -1,0 +1,63 @@
+[build-system]
+requires = ["hatchling>=1.5.0", "jupyterlab>=4.0.0,<5", "hatch-nodejs-version>=0.3.2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "odh_jupyter_pvc_alerts"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+requires-python = ">=3.9"
+dependencies = ["jupyter_server>=2.4.0,<3", "traitlets>=5.0"]
+dynamic = ["version", "description", "authors", "urls", "keywords"]
+
+[project.optional-dependencies]
+test = ["pytest", "pytest-asyncio", "pytest-cov", "pytest-jupyter[server]>=0.6.0"]
+
+[tool.hatch.version]
+source = "nodejs"
+
+[tool.hatch.metadata.hooks.nodejs]
+fields = ["description", "authors", "urls", "keywords"]
+
+[tool.hatch.build.targets.sdist]
+artifacts = ["odh_jupyter_pvc_alerts/labextension"]
+
+[tool.hatch.build.targets.wheel.shared-data]
+"odh_jupyter_pvc_alerts/labextension" = "share/jupyter/labextensions/odh-jupyter-pvc-alerts"
+"install.json" = "share/jupyter/labextensions/odh-jupyter-pvc-alerts/install.json"
+"jupyter-config/server-config" = "etc/jupyter/jupyter_server_config.d"
+
+[tool.hatch.build.hooks.version]
+path = "odh_jupyter_pvc_alerts/_version.py"
+
+[tool.hatch.build.hooks.jupyter-builder]
+dependencies = ["hatch-jupyter-builder>=0.5"]
+build-function = "hatch_jupyter_builder.npm_builder"
+ensured-targets = [
+    "odh_jupyter_pvc_alerts/labextension/static/style.js",
+    "odh_jupyter_pvc_alerts/labextension/package.json",
+]
+skip-if-exists = ["odh_jupyter_pvc_alerts/labextension/static/style.js"]
+
+[tool.hatch.build.hooks.jupyter-builder.build-kwargs]
+build_cmd = "build:prod"
+npm = ["jlpm"]
+
+[tool.hatch.build.hooks.jupyter-builder.editable-build-kwargs]
+build_cmd = "install:extension"
+npm = ["jlpm"]
+source_dir = "src"
+build_dir = "odh_jupyter_pvc_alerts/labextension"
+
+[tool.black]
+line-length = 79
+target-version = ["py39"]
+
+[tool.pytest.ini_options]
+testpaths = ["odh_jupyter_pvc_alerts/tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["odh_jupyter_pvc_alerts"]
+omit = ["*/tests/*", "*/_version.py", "*/labextension/*"]
