@@ -18,3 +18,11 @@ import-order-style = "google"
 [tool.black]
 line-length = 79
 target-version = ['py39', 'py310', 'py311', 'py312', 'py313']
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+strict_optional = true
+check_untyped_defs = true
